@@ -169,58 +169,6 @@ class MinimaxPlayer(IsolationPlayer):
 
         # Return the best move from the last completed search iteration
         return best_move
-    
-    
-    def terminal_test(self, game):
-        """ Return True if the game is over for the active player
-        and False otherwise.
-        """
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-            
-        return not bool(game.get_legal_moves())  # by Assumption 1
-    
-    def min_value(self, game, depth):
-        """ Return the value for a win (+1) if the game is over,
-        otherwise return the minimum value over all legal child
-        nodes.
-        """
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-            
-        if self.terminal_test(game):
-            return 1  # by Assumption 2
-        
-        depth=depth-1
-        if depth<=0:
-            return self.score(game, self)
-        
-        v = float("inf")
-        for m in game.get_legal_moves():
-           v = min(v, self.max_value(game.forecast_move(m), depth))
-        return v
-    
-    def max_value(self, game, depth):
-        """ Return the value for a loss (-1) if the game is over,
-        otherwise return the maximum value over all legal child
-        nodes.
-        """
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-            
-        if self.terminal_test(game):
-            return -1  # by assumption 2
-        
-        depth=depth-1
-        if depth<=0:
-            return self.score(game, self)
-        
-        v = float("-inf")
-        for m in game.get_legal_moves():
-            v = max(v, self.min_value(game.forecast_move(m), depth))
-        return v
-    
-    
 
     def minimax(self, game, depth):
         """Implement depth-limited minimax search algorithm as described in
@@ -265,20 +213,6 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         # TODO: finish this function!
-        if self.terminal_test(game):
-            return (-1, -1)
-        
-        best_score = float("-inf")
-        best_move = None
-        for m in game.get_legal_moves():
-            v = self.min_value(game.forecast_move(m), depth)
-            # I tried v = self.max_value(game.forecast_move(m), depth) also
-    
-        if v > best_score:
-            best_score = v
-            best_move = m
-        return best_move
-        
         raise NotImplementedError
 
 
